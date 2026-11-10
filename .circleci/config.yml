@@ -116,7 +116,7 @@ jobs:
               -d "{\"content\": \"${MESSAGE}\"}" \
               "$DISCORD_WEBHOOK_URL"
             echo "Posted to Discord: ${MESSAGE}"
-            
+
 # ==========================================
 # WORKFLOW - Run jobs in sequence
 # ==========================================
@@ -132,5 +132,16 @@ workflows:
           requires:
             - test
       - deploy:
+          context: docker-hub
           requires:
             - publish
+      - notify:
+          name: notify-success
+          result: success
+          requires:
+            - deploy: success
+      - notify:
+          name: notify-failure
+          result: failed
+          requires:
+            - deploy: failed
