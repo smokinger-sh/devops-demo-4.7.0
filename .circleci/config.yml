@@ -106,3 +106,6 @@ workflows:
           context: docker-hub
           requires:
             - test
+      - deploy:
+          requires:
+            - publish
